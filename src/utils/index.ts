@@ -3,8 +3,6 @@ export {
   parseDate,
   formatDate,
   getPeriodRange,
-  periodToYahooPeriod,
-  intervalToYahooInterval,
   getDefaultInterval,
   isValidPeriod,
   isValidInterval,

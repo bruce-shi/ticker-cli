@@ -36,7 +36,7 @@ export function getPeriodRange(period: PeriodPreset): {
     case "5d":
       start.setDate(end.getDate() - 5);
       break;
-    case "1w":
+    case "1wk":
       start.setDate(end.getDate() - 7);
       break;
     case "1mo":
@@ -65,41 +65,6 @@ export function getPeriodRange(period: PeriodPreset): {
 }
 
 /**
- * Map period preset to yahoo-finance2 period string
- */
-export function periodToYahooPeriod(period: PeriodPreset): string {
-  const mapping: Record<PeriodPreset, string> = {
-    "1d": "1d",
-    "5d": "5d",
-    "1w": "1wk",
-    "1mo": "1mo",
-    "3mo": "3mo",
-    "6mo": "6mo",
-    "1y": "1y",
-    "2y": "2y",
-    "5y": "5y",
-  };
-  return mapping[period];
-}
-
-/**
- * Map interval to yahoo-finance2 interval string
- */
-export function intervalToYahooInterval(interval: IntervalType): "1m" | "2m" | "5m" | "15m" | "30m" | "60m" | "90m" | "1h" | "1d" | "5d" | "1wk" | "1mo" | "3mo" {
-  const mapping: Record<IntervalType, "1m" | "2m" | "5m" | "15m" | "30m" | "60m" | "90m" | "1h" | "1d" | "5d" | "1wk" | "1mo" | "3mo"> = {
-    "1m": "1m",
-    "5m": "5m",
-    "15m": "15m",
-    "30m": "30m",
-    "1h": "1h",
-    "1d": "1d",
-    "1w": "1wk",
-    "1mo": "1mo",
-  };
-  return mapping[interval];
-}
-
-/**
  * Get the default interval for a period
  */
 export function getDefaultInterval(period: PeriodPreset): IntervalType {
@@ -107,7 +72,7 @@ export function getDefaultInterval(period: PeriodPreset): IntervalType {
     case "1d":
     case "5d":
       return "15m";
-    case "1w":
+    case "1wk":
       return "1h";
     case "1mo":
     case "3mo":
@@ -117,7 +82,7 @@ export function getDefaultInterval(period: PeriodPreset): IntervalType {
     case "2y":
       return "1d";
     case "5y":
-      return "1w";
+      return "1wk";
     default:
       return "1d";
   }
@@ -127,7 +92,7 @@ export function getDefaultInterval(period: PeriodPreset): IntervalType {
  * Validate a period preset
  */
 export function isValidPeriod(period: string): period is PeriodPreset {
-  return ["1d", "5d", "1w", "1mo", "3mo", "6mo", "1y", "2y", "5y"].includes(
+  return ["1d", "5d", "1wk", "1mo", "3mo", "6mo", "1y", "2y", "5y"].includes(
     period,
   );
 }
@@ -136,5 +101,7 @@ export function isValidPeriod(period: string): period is PeriodPreset {
  * Validate an interval type
  */
 export function isValidInterval(interval: string): interval is IntervalType {
-  return ["1m", "5m", "15m", "30m", "1h", "1d", "1w", "1mo"].includes(interval);
+  return ["1m", "5m", "15m", "30m", "1h", "1d", "1wk", "1mo"].includes(
+    interval,
+  );
 }

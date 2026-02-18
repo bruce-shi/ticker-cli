@@ -22,7 +22,7 @@ export function createIndicatorCommand(): Command {
     )
     .option(
       "-p, --period <period>",
-      "Preset period for historical data: 1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y",
+      "Preset period for historical data: 1d, 5d, 1wk, 1mo, 3mo, 6mo, 1y, 2y, 5y",
       "3mo",
     )
     .option("-s, --start <date>", "Start date (YYYY-MM-DD)")
@@ -74,7 +74,7 @@ export function createIndicatorCommand(): Command {
         if (options.period) {
           if (!isValidPeriod(options.period)) {
             console.error(
-              `Invalid period: ${options.period}. Valid options: 1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y`,
+              `Invalid period: ${options.period}. Valid options: 1d, 5d, 1wk, 1mo, 3mo, 6mo, 1y, 2y, 5y`,
             );
             process.exit(1);
           }
@@ -129,7 +129,7 @@ export function createIndicatorCommand(): Command {
           // Calculate indicator
           const indicatorResult = indicatorService.calculate(
             normalizedIndicator,
-            chartData.data,
+            chartData.quotes,
             config,
           );
 

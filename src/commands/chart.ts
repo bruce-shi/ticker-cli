@@ -14,13 +14,13 @@ export function createChartCommand(): Command {
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
     .option(
       "-p, --period <period>",
-      "Preset period: 1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y",
+      "Preset period: 1d, 5d, 1wk, 1mo, 3mo, 6mo, 1y, 2y, 5y",
     )
     .option("-s, --start <date>", "Start date (YYYY-MM-DD)")
     .option("-e, --end <date>", "End date (YYYY-MM-DD)")
     .option(
       "-i, --interval <interval>",
-      "Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1w, 1mo",
+      "Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo",
     )
     .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
@@ -44,7 +44,7 @@ export function createChartCommand(): Command {
         if (options.period) {
           if (!isValidPeriod(options.period)) {
             console.error(
-              `Invalid period: ${options.period}. Valid options: 1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y`,
+              `Invalid period: ${options.period}. Valid options: 1d, 5d, 1wk, 1mo, 3mo, 6mo, 1y, 2y, 5y`,
             );
             process.exit(1);
           }
@@ -56,7 +56,7 @@ export function createChartCommand(): Command {
         if (options.interval) {
           if (!isValidInterval(options.interval)) {
             console.error(
-              `Invalid interval: ${options.interval}. Valid options: 1m, 5m, 15m, 30m, 1h, 1d, 1w, 1mo`,
+              `Invalid interval: ${options.interval}. Valid options: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo`,
             );
             process.exit(1);
           }

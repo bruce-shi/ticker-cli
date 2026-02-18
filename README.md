@@ -31,7 +31,6 @@ ticker quote <symbols...>
 # Examples:
 ticker quote AAPL                    # Single quote
 ticker quote AAPL MSFT GOOGL         # Multiple quotes
-ticker quote AAPL --table            # Table format
 ```
 
 ### chart - Get chart/historical data
@@ -40,15 +39,15 @@ ticker quote AAPL --table            # Table format
 ticker chart <symbol> [options]
 
 Options:
-  -p, --period <period>     Preset period: 1d, 5d, 1w, 1mo, 3mo, 6mo, 1y, 2y, 5y
+  -p, --period <period>     Preset period: 1d, 5d, 1wk, 1mo, 3mo, 6mo, 1y, 2y, 5y
   -s, --start <date>        Start date (YYYY-MM-DD)
   -e, --end <date>          End date (YYYY-MM-DD)
-  -i, --interval <interval> Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1w, 1mo
+  -i, --interval <interval> Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo
 
 # Examples:
 ticker chart AAPL -p 1mo
 ticker chart AAPL --start 2025-01-01 --end 2025-12-31
-ticker chart AAPL -p 1y --interval 1w
+ticker chart AAPL -p 1y --interval 1wk
 ```
 
 ### indicator - Calculate technical indicators
@@ -172,16 +171,13 @@ ticker screener -q undervalued_large_caps
 ## Global Options
 
 ```
---table    Output as table instead of JSON
 --pretty   Pretty print JSON output (default: true)
 ```
 
 ## Output Format
 
-By default, output is in JSON format. Use `--table` for human-readable table format:
-
 ```bash
-ticker quote AAPL --table
+ticker quote AAPL
 ```
 
 ## Dependencies

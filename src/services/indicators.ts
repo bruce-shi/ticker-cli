@@ -1,10 +1,6 @@
 import { sma, ema, rsi, macd, bb } from "indicatorts";
-import type {
-  ChartDataPoint,
-  IndicatorResult,
-  IndicatorDataPoint,
-} from "../types";
-
+import type { ChartResultArrayQuote } from "yahoo-finance2/modules/chart";
+import type { IndicatorDataPoint, IndicatorResult } from "../types";
 /**
  * Indicator configuration options
  */
@@ -27,11 +23,11 @@ export class IndicatorService {
    * Calculate Simple Moving Average (SMA)
    */
   calculateSMA(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     const period = config.period ?? config.length ?? 20;
-    const closes = data.map((d) => d.close);
+    const closes = data.map((d) => d.close!);
 
     const smaValues = sma(closes, { period });
 
@@ -47,11 +43,11 @@ export class IndicatorService {
    * Calculate Exponential Moving Average (EMA)
    */
   calculateEMA(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     const period = config.period ?? config.length ?? 20;
-    const closes = data.map((d) => d.close);
+    const closes = data.map((d) => d.close!);
 
     const emaValues = ema(closes, { period });
 
@@ -67,11 +63,11 @@ export class IndicatorService {
    * Calculate Relative Strength Index (RSI)
    */
   calculateRSI(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     const period = config.period ?? config.length ?? 14;
-    const closes = data.map((d) => d.close);
+    const closes = data.map((d) => d.close!);
 
     const rsiValues = rsi(closes, { period });
 
@@ -87,13 +83,13 @@ export class IndicatorService {
    * Calculate MACD (Moving Average Convergence Divergence)
    */
   calculateMACD(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     const fast = config.fast ?? config.short ?? 12;
     const slow = config.slow ?? config.long ?? 26;
     const signal = config.signal ?? 9;
-    const closes = data.map((d) => d.close);
+    const closes = data.map((d) => d.close!);
 
     const macdResult = macd(closes, { fast, slow, signal });
 
@@ -120,11 +116,11 @@ export class IndicatorService {
    * Calculate Bollinger Bands
    */
   calculateBollingerBands(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     const period = config.period ?? config.length ?? 20;
-    const closes = data.map((d) => d.close);
+    const closes = data.map((d) => d.close!);
 
     const bbResult = bb(closes, { period });
 
@@ -148,7 +144,7 @@ export class IndicatorService {
    */
   calculate(
     indicator: string,
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     config: IndicatorConfig = {},
   ): IndicatorResult {
     switch (indicator.toLowerCase()) {
@@ -174,7 +170,7 @@ export class IndicatorService {
    * Indicators often have undefined values at the start
    */
   private alignIndicatorData(
-    data: ChartDataPoint[],
+    data: ChartResultArrayQuote[],
     values: number[],
   ): IndicatorDataPoint[] {
     return data.map((d, i) => ({
