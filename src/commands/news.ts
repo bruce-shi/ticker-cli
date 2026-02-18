@@ -12,7 +12,7 @@ export function createNewsCommand(): Command {
     .description("Get news for a symbol")
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
     .option("-l, --limit <number>", "Number of news articles", "10")
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (

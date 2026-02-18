@@ -13,7 +13,7 @@ export function createSearchCommand(): Command {
     .argument("<query>", "Search query (e.g., apple)")
     .option("--quotes", "Include quotes in results")
     .option("--news", "Include news in results")
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (

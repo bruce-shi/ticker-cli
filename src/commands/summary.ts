@@ -16,7 +16,7 @@ export function createSummaryCommand(): Command {
       "-m, --modules <modules>",
       "Comma-separated modules to include (e.g., summaryProfile,summaryDetail)",
     )
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -30,7 +30,9 @@ export function createSummaryCommand(): Command {
         const yahooService = createYahooService();
         const formatter = createFormatter(options);
 
-        const modules = options.modules?.split(",").map((m) => m.trim() as QuoteSummaryModules);
+        const modules = options.modules
+          ?.split(",")
+          .map((m) => m.trim() as QuoteSummaryModules);
 
         try {
           const summary = await yahooService.getSummary(symbol, modules);

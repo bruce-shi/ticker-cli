@@ -34,7 +34,7 @@ export function createIndicatorCommand(): Command {
     .option("--short <number>", "Short period for MACD (default: 12)")
     .option("--long <number>", "Long period for MACD (default: 26)")
     .option("--signal <number>", "Signal period for MACD (default: 9)")
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (

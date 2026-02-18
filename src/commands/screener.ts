@@ -26,7 +26,7 @@ export function createScreenerCommand(): Command {
       `Predefined query: ${PREDEFINED_QUERIES.join(", ")}`,
       "most_actives",
     )
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (options: {

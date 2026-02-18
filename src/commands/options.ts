@@ -14,7 +14,7 @@ export function createOptionsCommand(): Command {
     .option("-d, --date <date>", "Expiration date (YYYY-MM-DD)")
     .option("--calls", "Show only calls")
     .option("--puts", "Show only puts")
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (

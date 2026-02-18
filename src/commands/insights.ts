@@ -11,7 +11,7 @@ export function createInsightsCommand(): Command {
   command
     .description("Get insights for a symbol")
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
-    .option("--table", "Output as table instead of JSON")
+    // .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (

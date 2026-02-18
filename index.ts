@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { Command } from "commander";
 import {
   createQuoteCommand,
@@ -16,7 +16,7 @@ import {
 const program = new Command();
 
 program
-  .name("ticker")
+  .name("ticker-cli")
   .description(
     "Trading analysis CLI - stock quotes, charts, indicators, and more",
   )

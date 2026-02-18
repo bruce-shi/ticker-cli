@@ -1,14 +1,18 @@
 {
   "name": "ticker-cli",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "module": "index.ts",
   "type": "module",
   "bin": {
-    "ticker": "./index.ts"
+    "ticker-cli": "./dist/index.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "bun run index.ts",
-    "ticker": "bun run index.ts"
+    "start": "bun index.ts",
+    "build": "bun build --target node index.ts --outdir dist",
+    "prepublishOnly": "bun run build"
   },
   "devDependencies": {
     "@types/bun": "latest"
