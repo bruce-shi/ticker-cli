@@ -1,6 +1,9 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import {
+  createRecommendationsFormatter,
+  type RecommendationsData,
+} from "../formatters";
 
 /**
  * Create the recommendations command
@@ -11,7 +14,7 @@ export function createRecommendationsCommand(): Command {
   command
     .description("Get analyst recommendations for a symbol")
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -22,10 +25,14 @@ export function createRecommendationsCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createRecommendationsFormatter(options);
 
         try {
-          const recommendations = await yahooService.getRecommendations(symbol);
+          const result = await yahooService.getRecommendations(symbol);
+
+          // Use raw data and cast to our format
+          const recommendations = result as unknown as RecommendationsData;
+
           const output = formatter.format(recommendations);
           console.log(output);
         } catch (error) {

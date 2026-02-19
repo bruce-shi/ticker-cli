@@ -1,7 +1,8 @@
 import { Command } from "commander";
 import { createYahooService, createIndicatorService } from "../services";
-import { createFormatter, isValidPeriod } from "../utils";
-import type { PeriodPreset } from "../types";
+import { createIndicatorFormatter, type IndicatorData } from "../formatters";
+import { isValidPeriod, isValidInterval } from "../utils";
+import type { PeriodPreset, IntervalType } from "../types";
 
 const AVAILABLE_INDICATORS = ["sma", "ema", "rsi", "macd", "bb"] as const;
 
@@ -28,13 +29,17 @@ export function createIndicatorCommand(): Command {
     .option("-s, --start <date>", "Start date (YYYY-MM-DD)")
     .option("-e, --end <date>", "End date (YYYY-MM-DD)")
     .option(
+      "-i, --interval <interval>",
+      "Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo",
+    )
+    .option(
       "--length <number>",
       "Period length for SMA/EMA/RSI/BB (default: 20 for SMA/EMA/BB, 14 for RSI)",
     )
     .option("--short <number>", "Short period for MACD (default: 12)")
     .option("--long <number>", "Long period for MACD (default: 26)")
     .option("--signal <number>", "Signal period for MACD (default: 9)")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -44,6 +49,7 @@ export function createIndicatorCommand(): Command {
           period?: string;
           start?: string;
           end?: string;
+          interval?: string;
           length?: string;
           short?: string;
           long?: string;
@@ -54,7 +60,7 @@ export function createIndicatorCommand(): Command {
       ) => {
         const yahooService = createYahooService();
         const indicatorService = createIndicatorService();
-        const formatter = createFormatter(options);
+        const formatter = createIndicatorFormatter(options);
 
         // Validate indicator
         const normalizedIndicator = indicator.toLowerCase();
@@ -79,6 +85,18 @@ export function createIndicatorCommand(): Command {
             process.exit(1);
           }
           period = options.period as PeriodPreset;
+        }
+
+        // Validate interval if provided
+        let interval: IntervalType | undefined;
+        if (options.interval) {
+          if (!isValidInterval(options.interval)) {
+            console.error(
+              `Invalid interval: ${options.interval}. Valid options: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo`,
+            );
+            process.exit(1);
+          }
+          interval = options.interval as IntervalType;
         }
 
         // Parse numeric options
@@ -124,6 +142,7 @@ export function createIndicatorCommand(): Command {
             period,
             start: options.start,
             end: options.end,
+            interval,
           });
 
           // Calculate indicator
@@ -136,7 +155,7 @@ export function createIndicatorCommand(): Command {
           // Add symbol to result
           indicatorResult.symbol = symbol;
 
-          const output = formatter.format(indicatorResult);
+          const output = formatter.format(indicatorResult as IndicatorData);
           console.log(output);
         } catch (error) {
           console.error(

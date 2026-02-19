@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createNewsFormatter, type NewsData } from "../formatters";
 
 /**
  * Create the news command
@@ -12,7 +12,7 @@ export function createNewsCommand(): Command {
     .description("Get news for a symbol")
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
     .option("-l, --limit <number>", "Number of news articles", "10")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -24,12 +24,13 @@ export function createNewsCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createNewsFormatter(options);
 
         const limit = options.limit ? parseInt(options.limit, 10) : 10;
 
         try {
-          const news = await yahooService.getNews(symbol, limit);
+          const result = await yahooService.getNews(symbol, limit);
+          const news = (result.news ?? []) as NewsData;
           const output = formatter.format(news);
           console.log(output);
         } catch (error) {

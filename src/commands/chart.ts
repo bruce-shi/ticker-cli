@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter, isValidPeriod, isValidInterval } from "../utils";
+import { createChartFormatter, type ChartData } from "../formatters";
+import { isValidPeriod, isValidInterval } from "../utils";
 import type { PeriodPreset, IntervalType } from "../types";
 
 /**
@@ -22,7 +23,7 @@ export function createChartCommand(): Command {
       "-i, --interval <interval>",
       "Interval: 1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo",
     )
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON", false)
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -37,7 +38,7 @@ export function createChartCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createChartFormatter(options);
 
         // Validate period if provided
         let period: PeriodPreset | undefined;
@@ -84,7 +85,7 @@ export function createChartCommand(): Command {
             end: options.end,
             interval,
           });
-          const output = formatter.format(chartData);
+          const output = formatter.format(chartData as ChartData);
           console.log(output);
         } catch (error) {
           console.error(

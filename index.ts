@@ -20,9 +20,7 @@ program
   .description(
     "Trading analysis CLI - stock quotes, charts, indicators, and more",
   )
-  .version("1.0.0")
-  .option("--table", "Output as table instead of JSON (global option)")
-  .option("--pretty", "Pretty print JSON output", true);
+  .version("1.0.0");
 
 // Add all commands
 program.addCommand(createQuoteCommand());

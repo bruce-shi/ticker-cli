@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createScreenerFormatter, type ScreenerData } from "../formatters";
 import type { PredefinedScreenerModules } from "yahoo-finance2/modules/screener";
 
 const PREDEFINED_QUERIES: PredefinedScreenerModules[] = [
@@ -26,7 +26,7 @@ export function createScreenerCommand(): Command {
       `Predefined query: ${PREDEFINED_QUERIES.join(", ")}`,
       "most_actives",
     )
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (options: {
@@ -35,14 +35,15 @@ export function createScreenerCommand(): Command {
         pretty?: boolean;
       }) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createScreenerFormatter(options);
 
         const query = (options.query ??
           "most_actives") as PredefinedScreenerModules;
 
         try {
           const screenerData = await yahooService.getScreener(query);
-          const output = formatter.format(screenerData);
+          const data = screenerData as unknown as ScreenerData;
+          const output = formatter.format(data);
           console.log(output);
         } catch (error) {
           console.error(

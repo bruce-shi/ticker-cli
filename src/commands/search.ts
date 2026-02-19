@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createSearchFormatter } from "../formatters";
+import type { SearchResult } from "yahoo-finance2/modules/search";
 
 /**
  * Create the search command
@@ -13,7 +14,7 @@ export function createSearchCommand(): Command {
     .argument("<query>", "Search query (e.g., apple)")
     .option("--quotes", "Include quotes in results")
     .option("--news", "Include news in results")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -26,14 +27,14 @@ export function createSearchCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createSearchFormatter(options);
 
         try {
           const result = await yahooService.search(query, {
             includeQuotes: options.quotes,
             includeNews: options.news,
           });
-          const output = formatter.format(result);
+          const output = formatter.format(result as SearchResult);
           console.log(output);
         } catch (error) {
           console.error(

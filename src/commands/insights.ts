@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createInsightsFormatter, type InsightsData } from "../formatters";
 
 /**
  * Create the insights command
@@ -11,7 +11,7 @@ export function createInsightsCommand(): Command {
   command
     .description("Get insights for a symbol")
     .argument("<symbol>", "Stock symbol (e.g., AAPL)")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -22,11 +22,11 @@ export function createInsightsCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createInsightsFormatter(options);
 
         try {
           const insights = await yahooService.getInsights(symbol);
-          const output = formatter.format(insights);
+          const output = formatter.format(insights as unknown as InsightsData);
           console.log(output);
         } catch (error) {
           console.error(

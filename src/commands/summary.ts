@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createSummaryFormatter, extractSummaryFields, type SummaryData } from "../formatters";
 import type { QuoteSummaryModules } from "yahoo-finance2/modules/quoteSummary";
 
 /**
@@ -16,7 +16,7 @@ export function createSummaryCommand(): Command {
       "-m, --modules <modules>",
       "Comma-separated modules to include (e.g., summaryProfile,summaryDetail)",
     )
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -28,7 +28,7 @@ export function createSummaryCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createSummaryFormatter(options);
 
         const modules = options.modules
           ?.split(",")
@@ -36,7 +36,21 @@ export function createSummaryCommand(): Command {
 
         try {
           const summary = await yahooService.getSummary(symbol, modules);
-          const output = formatter.format(summary);
+          
+          // For table output, extract key fields
+          const summaryData: SummaryData = options.table
+            ? {
+                symbol,
+                fields: extractSummaryFields(summary as Record<string, unknown>),
+                raw: summary as Record<string, unknown>,
+              }
+            : {
+                symbol,
+                fields: [],
+                raw: summary as Record<string, unknown>,
+              };
+          
+          const output = formatter.format(summaryData);
           console.log(output);
         } catch (error) {
           console.error(

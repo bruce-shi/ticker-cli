@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import { createYahooService } from "../services";
-import { createFormatter } from "../utils";
+import { createOptionsFormatter } from "../formatters";
+import type { OptionsResult } from "yahoo-finance2/modules/options";
 
 /**
  * Create the options command
@@ -14,7 +15,7 @@ export function createOptionsCommand(): Command {
     .option("-d, --date <date>", "Expiration date (YYYY-MM-DD)")
     .option("--calls", "Show only calls")
     .option("--puts", "Show only puts")
-    // .option("--table", "Output as table instead of JSON")
+    .option("--table", "Output as table instead of JSON")
     .option("--pretty", "Pretty print JSON output", true)
     .action(
       async (
@@ -28,7 +29,7 @@ export function createOptionsCommand(): Command {
         },
       ) => {
         const yahooService = createYahooService();
-        const formatter = createFormatter(options);
+        const formatter = createOptionsFormatter(options);
 
         try {
           const optionsData = await yahooService.getOptions(
@@ -37,24 +38,25 @@ export function createOptionsCommand(): Command {
           );
 
           // Filter calls/puts if requested
+          let dataToFormat: OptionsResult;
           if (options.calls && !options.puts) {
-            const output = formatter.format({
-              symbol: optionsData.symbol,
-              expirationDate: optionsData.expirationDate,
-              calls: optionsData.calls,
-            });
-            console.log(output);
+            // Create a copy with only calls
+            dataToFormat = {
+              ...optionsData,
+              puts: [],
+            } as OptionsResult;
           } else if (options.puts && !options.calls) {
-            const output = formatter.format({
-              symbol: optionsData.symbol,
-              expirationDate: optionsData.expirationDate,
-              puts: optionsData.puts,
-            });
-            console.log(output);
+            // Create a copy with only puts
+            dataToFormat = {
+              ...optionsData,
+              calls: [],
+            } as OptionsResult;
           } else {
-            const output = formatter.format(optionsData);
-            console.log(output);
+            dataToFormat = optionsData as OptionsResult;
           }
+
+          const output = formatter.format(dataToFormat);
+          console.log(output);
         } catch (error) {
           console.error(
             "Error fetching options:",
