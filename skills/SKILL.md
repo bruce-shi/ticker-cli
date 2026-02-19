@@ -45,6 +45,7 @@ npx ticker-cli chart AAPL --start 2025-01-01 --end 2025-12-31
 npx ticker-cli indicator AAPL sma -p 3mo
 npx ticker-cli indicator AAPL rsi -p 3mo
 npx ticker-cli indicator AAPL macd -p 6mo
+npx ticker-cli indicator AAPL sma -p 1mo -i 1h
 
 # Get news and insights
 npx ticker-cli news AAPL --limit 20

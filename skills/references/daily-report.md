@@ -260,6 +260,7 @@ npx ticker-cli indicator SYMBOL ema -p 3mo --length 20
 npx ticker-cli indicator SYMBOL rsi -p 3mo
 npx ticker-cli indicator SYMBOL macd -p 3mo
 npx ticker-cli indicator SYMBOL bb -p 3mo
+npx ticker-cli indicator SYMBOL sma -p 1mo -i 1h  # With custom interval
 
 # Screeners
 npx ticker-cli screener -q most_actives

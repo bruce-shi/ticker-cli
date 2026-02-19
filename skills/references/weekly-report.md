@@ -43,13 +43,13 @@ For each stock in your portfolio/watchlist:
 npx ticker-cli chart AAPL -p 1wk --interval 1d
 
 # Moving averages (weekly perspective)
-npx ticker-cli indicator AAPL sma -p 6mo --length 20
-npx ticker-cli indicator AAPL sma -p 6mo --length 50
-npx ticker-cli indicator AAPL ema -p 6mo --length 20
+npx ticker-cli indicator AAPL sma -p 6mo --length 20 --interval 1d
+npx ticker-cli indicator AAPL sma -p 6mo --length 50 --interval 1d
+npx ticker-cli indicator AAPL ema -p 6mo --length 20 --interval 1d
 
 # Momentum indicators
-npx ticker-cli indicator AAPL rsi -p 3mo
-npx ticker-cli indicator AAPL macd -p 3mo
+npx ticker-cli indicator AAPL rsi -p 3mo --interval 1d
+npx ticker-cli indicator AAPL macd -p 3mo --interval 1d
 
 # Volatility analysis
 npx ticker-cli indicator AAPL bb -p 3mo
@@ -275,6 +275,10 @@ npx ticker-cli indicator SYMBOL macd -p 3mo
 
 # Volatility
 npx ticker-cli indicator SYMBOL bb -p 3mo
+
+# With custom interval (1m, 5m, 15m, 30m, 1h, 1d, 1wk, 1mo)
+npx ticker-cli indicator SYMBOL sma -p 1mo -i 1h
+npx ticker-cli indicator SYMBOL rsi -p 1wk -i 1d
 ```
 
 ### Screener Commands
