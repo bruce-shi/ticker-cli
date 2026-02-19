@@ -20,7 +20,7 @@ program
   .description(
     "Trading analysis CLI - stock quotes, charts, indicators, and more",
   )
-  .version("1.0.0");
+  .version("1.0.8");
 
 // Add all commands
 program.addCommand(createQuoteCommand());
